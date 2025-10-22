@@ -1,5 +1,5 @@
-import React from "react";
-import styles from "./footer.module.scss";
+import React from 'react';
+import styles from './footer.module.scss';
 
 const Footer: React.FC = () => {
     return (
@@ -7,8 +7,7 @@ const Footer: React.FC = () => {
             <div className={styles.container}>
                 <span className={styles.logo}>Track It Easy</span>
                 <span className={styles.copyright}>
-                    &copy; {new Date().getFullYear()} Track It Easy. All rights
-                    reserved.
+                    &copy; {new Date().getFullYear()} Track It Easy. All rights reserved.
                 </span>
                 <nav className={styles.links}>
                     <a href="/" className={styles.link}>
@@ -20,10 +19,7 @@ const Footer: React.FC = () => {
                 </nav>
                 <div className={styles.contacts}>
                     <span>Контакти:</span>
-                    <a
-                        href="mailto:trackiteasymain@gmail.com"
-                        className={styles.contactLink}
-                    >
+                    <a href="mailto:trackiteasymain@gmail.com" className={styles.contactLink}>
                         trackiteasymain@gmail.com
                     </a>
                     <a

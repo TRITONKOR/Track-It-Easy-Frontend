@@ -1,7 +1,3 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 * {
   padding: 0;
   margin: 0;
@@ -16,5 +12,6 @@ html, body, #root {
 
 #root {
   display: flex;
+  font-family: 'Roboto', sans-serif;
   flex-direction: column;
 }
