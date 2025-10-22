@@ -1,9 +1,8 @@
-import { Button } from "@heroui/button";
-import { Image } from "@heroui/image";
-import { Input } from "@heroui/input";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
-import styles from "./loginPage.module.scss";
+import { useNavigate } from 'react-router-dom';
+import { Button } from '../../components/ui/Button/Button';
+import { Input } from '../../components/ui/Input/Input';
+import { useAuth } from '../../context/AuthContext';
+import styles from './loginPage.module.scss';
 
 export const LoginPage: React.FC = () => {
     const navigate = useNavigate();
@@ -17,66 +16,54 @@ export const LoginPage: React.FC = () => {
 
         try {
             await login(email, password);
-            navigate("/");
+            navigate('/');
         } catch (error) {
-            console.error("Login failed:", error);
+            console.error('Login failed:', error);
         }
     };
 
     return (
-        <div className={styles["login-container"]}>
-            <div className={styles["login-section"]}>
-                <div className={styles["form-container"]}>
+        <div className={styles['login-container']}>
+            <div className={styles['login-section']}>
+                <div className={styles['form-container']}>
                     <h1>Вітаємо знову!</h1>
                     {error && (
-                        <div className={styles["error-message"]}>
+                        <div className={styles['error-message']}>
                             {error}
-                            <button
-                                onClick={clearError}
-                                className={styles["close-error"]}
-                            >
+                            <button onClick={clearError} className={styles['close-error']}>
                                 ×
                             </button>
                         </div>
                     )}
-                    <form
-                        className={styles["login-form"]}
-                        onSubmit={handleSubmit}
-                    >
-                        <div className={styles["form-group"]}>
+                    <form className={styles['login-form']} onSubmit={handleSubmit}>
+                        <div className={styles['form-group']}>
                             <Input
-                                className={styles["form-input"]}
-                                isRequired
+                                className={styles['form-input']}
                                 placeholder="Електронна пошта"
                                 type="email"
+                                isRequired
                                 onChange={clearError}
                             />
                             <Input
-                                className={styles["form-input"]}
+                                className={styles['form-input']}
                                 isRequired
                                 placeholder="Пароль"
                                 type="password"
                                 onChange={clearError}
                             />
-                            <Button
-                                className={styles["submit-button"]}
-                                color="primary"
-                                type="submit"
-                            >
-                                Увійти
-                            </Button>
+                            <Button type="submit">Увійти</Button>
                         </div>
                     </form>
-                    <div className={styles["register-link"]}>
-                        <p className={styles["text-sm"]}>Ще не маєте акаунт?</p>
-                        <a className={styles["text-sm"]} href="/register">
+                    <div className={styles['register-link']}>
+                        <p className={styles['text-sm']}>Ще не маєте акаунт?</p>
+                        <a className={styles['text-sm']} href="/register">
                             Зареєструватися
                         </a>
                     </div>
                 </div>
-                <div className={styles["image-container"]}>
-                    <Image
-                        className={styles["login-image"]}
+                <div className={styles['image-container']}>
+                    <img
+                        className={styles['login-image']}
                         width="400px"
                         alt="Login image"
                         src="/login-image.jpg"

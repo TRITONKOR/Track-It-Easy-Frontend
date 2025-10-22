@@ -89,6 +89,15 @@
       .action-buttons {
         display: flex;
         gap: 0.5rem;
+
+        .delete-button {
+          background-color: hsl(0, 72%, 51%);
+          color: white;
+
+          &:hover {
+            background-color: hsl(0, 72%, 41%);
+          }
+        }
       }
     }
 

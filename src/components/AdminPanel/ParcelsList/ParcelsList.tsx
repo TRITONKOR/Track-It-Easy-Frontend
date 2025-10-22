@@ -1,5 +1,4 @@
 import {
-    Button,
     Card,
     Chip,
     Modal,
@@ -15,10 +14,11 @@ import {
     TableHeader,
     TableRow,
     useDisclosure,
-} from "@heroui/react";
-import React, { useEffect, useState } from "react";
-import { Parcel, TrackApi } from "../../../api/TrackApi";
-import styles from "./parcelsList.module.scss";
+} from '@heroui/react';
+import React, { useEffect, useState } from 'react';
+import { Parcel, TrackApi } from '../../../api/TrackApi';
+import { Button } from '../../../components/ui/Button/Button';
+import styles from './parcelsList.module.scss';
 
 const ParcelsList: React.FC = () => {
     const [parcels, setParcels] = useState<Parcel[]>([]);
@@ -28,19 +28,19 @@ const ParcelsList: React.FC = () => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     const columns = [
-        { key: "trackingNumber", label: "Трек-номер" },
-        { key: "status", label: "Статус" },
-        { key: "factualWeight", label: "Вага (кг)" },
-        { key: "fromLocation", label: "Звідки" },
-        { key: "toLocation", label: "Куди" },
-        { key: "actions", label: "Дії" },
+        { key: 'trackingNumber', label: 'Трек-номер' },
+        { key: 'status', label: 'Статус' },
+        { key: 'factualWeight', label: 'Вага (кг)' },
+        { key: 'fromLocation', label: 'Звідки' },
+        { key: 'toLocation', label: 'Куди' },
+        { key: 'actions', label: 'Дії' },
     ];
 
     const statuses = [
-        { value: "created", label: "Створено" },
-        { value: "in_transit", label: "В дорозі" },
-        { value: "delivered", label: "Доставлено" },
-        { value: "returned", label: "Повернено" },
+        { value: 'created', label: 'Створено' },
+        { value: 'in_transit', label: 'В дорозі' },
+        { value: 'delivered', label: 'Доставлено' },
+        { value: 'returned', label: 'Повернено' },
     ];
 
     useEffect(() => {
@@ -49,9 +49,7 @@ const ParcelsList: React.FC = () => {
                 const data = await TrackApi.getAllParcels();
                 setParcels(data);
             } catch (err) {
-                setError(
-                    err instanceof Error ? err.message : "Помилка завантаження"
-                );
+                setError(err instanceof Error ? err.message : 'Помилка завантаження');
             } finally {
                 setLoading(false);
             }
@@ -73,124 +71,77 @@ const ParcelsList: React.FC = () => {
                 return newParcels;
             });
         } catch (err) {
-            console.error("Error deleting parcel:", err);
+            console.error('Error deleting parcel:', err);
         }
     };
 
     if (loading) return <Spinner />;
-    if (error)
-        return <div className={styles["error-message"]}>Помилка: {error}</div>;
+    if (error) return <div className={styles['error-message']}>Помилка: {error}</div>;
 
     return (
-        <div className={styles["parcels-list"]}>
-            <h1 className={styles["title"]}>Список посилок</h1>
+        <div className={styles['parcels-list']}>
+            <h1 className={styles['title']}>Список посилок</h1>
 
             <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className={styles["modal-title"]}>
+                            <ModalHeader className={styles['modal-title']}>
                                 Деталі посилки
                             </ModalHeader>
                             <ModalBody>
                                 {selectedParcel && (
-                                    <div className={styles["parcel-details"]}>
-                                        <div className={styles["detail-row"]}>
-                                            <span
-                                                className={
-                                                    styles["detail-label"]
-                                                }
-                                            >
+                                    <div className={styles['parcel-details']}>
+                                        <div className={styles['detail-row']}>
+                                            <span className={styles['detail-label']}>
                                                 Трек-номер:
                                             </span>
-                                            <span>
-                                                {selectedParcel.trackingNumber}
-                                            </span>
+                                            <span>{selectedParcel.trackingNumber}</span>
                                         </div>
-                                        <div className={styles["detail-row"]}>
-                                            <span
-                                                className={
-                                                    styles["detail-label"]
-                                                }
-                                            >
-                                                Статус:
-                                            </span>
+                                        <div className={styles['detail-row']}>
+                                            <span className={styles['detail-label']}>Статус:</span>
                                             <Chip
                                                 color={
-                                                    selectedParcel.status ===
-                                                    "Доставлено"
-                                                        ? "success"
-                                                        : selectedParcel.status ===
-                                                          "Повернено"
-                                                        ? "danger"
-                                                        : "warning"
+                                                    selectedParcel.status === 'Доставлено'
+                                                        ? 'success'
+                                                        : selectedParcel.status === 'Повернено'
+                                                          ? 'danger'
+                                                          : 'warning'
                                                 }
                                                 className={
-                                                    styles["status-chip"] +
-                                                    " " +
+                                                    styles['status-chip'] +
+                                                    ' ' +
                                                     styles[
-                                                        selectedParcel.status ===
-                                                        "delivered"
-                                                            ? "delivered"
-                                                            : selectedParcel.status ===
-                                                              "returned"
-                                                            ? "returned"
-                                                            : selectedParcel.status
+                                                        selectedParcel.status === 'delivered'
+                                                            ? 'delivered'
+                                                            : selectedParcel.status === 'returned'
+                                                              ? 'returned'
+                                                              : selectedParcel.status
                                                     ]
                                                 }
                                             >
                                                 {statuses.find(
-                                                    (s) =>
-                                                        s.value ===
-                                                        selectedParcel.status
-                                                )?.label ||
-                                                    selectedParcel.status}
+                                                    (s) => s.value === selectedParcel.status,
+                                                )?.label || selectedParcel.status}
                                             </Chip>
                                         </div>
-                                        <div className={styles["detail-row"]}>
-                                            <span
-                                                className={
-                                                    styles["detail-label"]
-                                                }
-                                            >
-                                                Вага:
-                                            </span>
-                                            <span>
-                                                {selectedParcel.factualWeight}{" "}
-                                                кг
-                                            </span>
+                                        <div className={styles['detail-row']}>
+                                            <span className={styles['detail-label']}>Вага:</span>
+                                            <span>{selectedParcel.factualWeight} кг</span>
                                         </div>
-                                        <div className={styles["detail-row"]}>
-                                            <span
-                                                className={
-                                                    styles["detail-label"]
-                                                }
-                                            >
-                                                Звідки:
-                                            </span>
-                                            <span>
-                                                {selectedParcel.fromLocation}
-                                            </span>
+                                        <div className={styles['detail-row']}>
+                                            <span className={styles['detail-label']}>Звідки:</span>
+                                            <span>{selectedParcel.fromLocation}</span>
                                         </div>
-                                        <div className={styles["detail-row"]}>
-                                            <span
-                                                className={
-                                                    styles["detail-label"]
-                                                }
-                                            >
-                                                Куди:
-                                            </span>
-                                            <span>
-                                                {selectedParcel.toLocation}
-                                            </span>
+                                        <div className={styles['detail-row']}>
+                                            <span className={styles['detail-label']}>Куди:</span>
+                                            <span>{selectedParcel.toLocation}</span>
                                         </div>
                                     </div>
                                 )}
                             </ModalBody>
-                            <ModalFooter className={styles["modal-actions"]}>
-                                <Button color="primary" onPress={onClose}>
-                                    Закрити
-                                </Button>
+                            <ModalFooter className={styles['modal-actions']}>
+                                <Button onClick={onClose}>Закрити</Button>
                             </ModalFooter>
                         </>
                     )}
@@ -198,106 +149,67 @@ const ParcelsList: React.FC = () => {
             </Modal>
 
             <Card>
-                <Table
-                    aria-label="Таблиця посилок"
-                    className={styles["parcels-table"]}
-                >
+                <Table aria-label="Таблиця посилок" className={styles['parcels-table']}>
                     <TableHeader columns={columns}>
-                        {(column) => (
-                            <TableColumn key={column.key}>
-                                {column.label}
-                            </TableColumn>
-                        )}
+                        {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
                     </TableHeader>
                     <TableBody items={parcels}>
                         {(parcel) => (
                             <TableRow key={parcel.id}>
                                 {(columnKey) => {
                                     switch (columnKey) {
-                                        case "status":
+                                        case 'status':
                                             return (
                                                 <TableCell>
                                                     <Chip
                                                         color={
-                                                            parcel.status ===
-                                                            "Доставлено"
-                                                                ? "success"
-                                                                : parcel.status ===
-                                                                  "Повернено"
-                                                                ? "danger"
-                                                                : "warning"
+                                                            parcel.status === 'Доставлено'
+                                                                ? 'success'
+                                                                : parcel.status === 'Повернено'
+                                                                  ? 'danger'
+                                                                  : 'warning'
                                                         }
                                                         className={
+                                                            styles['status-chip'] +
+                                                            ' ' +
                                                             styles[
-                                                                "status-chip"
-                                                            ] +
-                                                            " " +
-                                                            styles[
-                                                                parcel.status ===
-                                                                "delivered"
-                                                                    ? "delivered"
-                                                                    : parcel.status ===
-                                                                      "returned"
-                                                                    ? "returned"
-                                                                    : parcel.status
+                                                                parcel.status === 'delivered'
+                                                                    ? 'delivered'
+                                                                    : parcel.status === 'returned'
+                                                                      ? 'returned'
+                                                                      : parcel.status
                                                             ]
                                                         }
                                                     >
                                                         {statuses.find(
-                                                            (s) =>
-                                                                s.value ===
-                                                                parcel.status
-                                                        )?.label ||
-                                                            parcel.status}
+                                                            (s) => s.value === parcel.status,
+                                                        )?.label || parcel.status}
                                                     </Chip>
                                                 </TableCell>
                                             );
-                                        case "actions":
+                                        case 'actions':
                                             return (
-                                                <TableCell
-                                                    className={
-                                                        styles["actions-cell"]
-                                                    }
-                                                >
-                                                    <div
-                                                        className={
-                                                            styles[
-                                                                "action-buttons"
-                                                            ]
-                                                        }
-                                                    >
+                                                <TableCell className={styles['actions-cell']}>
+                                                    <div className={styles['action-buttons']}>
                                                         <Button
-                                                            size="sm"
-                                                            onPress={() =>
-                                                                handleViewDetails(
-                                                                    parcel
-                                                                )
+                                                            onClick={() =>
+                                                                handleViewDetails(parcel)
                                                             }
                                                         >
                                                             Деталі
                                                         </Button>
                                                         <Button
-                                                            size="sm"
-                                                            color="danger"
-                                                            onPress={() =>
-                                                                handleDelete(
-                                                                    parcel.id
-                                                                )
-                                                            }
+                                                            className={styles['delete-button']}
+                                                            onClick={() => handleDelete(parcel.id)}
                                                         >
                                                             Видалити
                                                         </Button>
                                                     </div>
                                                 </TableCell>
                                             );
-                                        case "factualWeight":
-                                            return (
-                                                <TableCell>
-                                                    {parcel.factualWeight} кг
-                                                </TableCell>
-                                            );
+                                        case 'factualWeight':
+                                            return <TableCell>{parcel.factualWeight} кг</TableCell>;
                                         default:
-                                            // Render the value for other columns
                                             return (
                                                 <TableCell>
                                                     {

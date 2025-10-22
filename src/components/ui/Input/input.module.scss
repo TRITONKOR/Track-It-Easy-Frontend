@@ -1,0 +1,35 @@
+.input {
+  background-color: hsl(0, 0%, 63%, 0.1);
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 15px;
+  font-size: 1rem;
+  border: none;
+  outline: none;
+  box-sizing: border-box;
+  color: #000;
+  font-size: 1rem;
+
+  &::placeholder {
+    color: hsl(0, 0%, 46%);
+  }
+
+  &:hover {
+    background-color: hsl(0, 0%, 63%, 0.3);
+    transition: background-color 0.2s ease;
+  }
+}
+
+.label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.error {
+    color: red;
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+    display: block;
+}
+

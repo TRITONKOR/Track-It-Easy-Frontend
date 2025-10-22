@@ -1,8 +1,6 @@
 import {
-    Button,
     Card,
     Chip,
-    Input,
     Modal,
     ModalBody,
     ModalContent,
@@ -18,18 +16,14 @@ import {
     TableHeader,
     TableRow,
     useDisclosure,
-} from "@heroui/react";
-import React, { useEffect, useState } from "react";
-import {
-    createUser,
-    deleteUser,
-    fetchUsers,
-    updateUser,
-    User,
-} from "../../../api/UserApi";
-import { useAuth } from "../../../context/AuthContext";
-import { useUserForm } from "../../../hooks/useUserForm";
-import styles from "./usersList.module.scss";
+} from '@heroui/react';
+import React, { useEffect, useState } from 'react';
+import { createUser, deleteUser, fetchUsers, updateUser, User } from '../../../api/UserApi';
+import { Button } from '../../../components/ui/Button/Button';
+import { Input } from '../../../components/ui/Input/Input';
+import { useAuth } from '../../../context/AuthContext';
+import { useUserForm } from '../../../hooks/useUserForm';
+import styles from './usersList.module.scss';
 
 const UsersList: React.FC = () => {
     const [users, setUsers] = useState<User[]>([]);
@@ -37,30 +31,30 @@ const UsersList: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [editingUser, setEditingUser] = useState<User | null>(null);
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
-    const form = useUserForm("user");
+    const form = useUserForm('user');
     const { user: currentUser } = useAuth();
 
     const [editValues, setEditValues] = useState({
-        username: "",
-        email: "",
-        role: "user",
+        username: '',
+        email: '',
+        role: 'user',
     });
     const [editErrors, setEditErrors] = useState({
-        username: "",
-        email: "",
+        username: '',
+        email: '',
     });
 
     const columns = [
-        { key: "username", label: "Ім'я користувача" },
-        { key: "email", label: "Email" },
-        { key: "role", label: "Роль" },
-        { key: "createdAt", label: "Дата створення" },
-        { key: "actions", label: "Дії" },
+        { key: 'username', label: "Ім'я користувача" },
+        { key: 'email', label: 'Email' },
+        { key: 'role', label: 'Роль' },
+        { key: 'createdAt', label: 'Дата створення' },
+        { key: 'actions', label: 'Дії' },
     ];
 
     const roles = [
-        { value: "user", label: "Користувач" },
-        { value: "admin", label: "Адміністратор" },
+        { value: 'user', label: 'Користувач' },
+        { value: 'admin', label: 'Адміністратор' },
     ];
 
     useEffect(() => {
@@ -69,9 +63,7 @@ const UsersList: React.FC = () => {
                 const data = await fetchUsers();
                 setUsers(data);
             } catch (err) {
-                setError(
-                    err instanceof Error ? err.message : "Помилка завантаження"
-                );
+                setError(err instanceof Error ? err.message : 'Помилка завантаження');
             } finally {
                 setLoading(false);
             }
@@ -88,7 +80,7 @@ const UsersList: React.FC = () => {
             setUsers((prev) => [...prev, newUser]);
             form.reset();
         } catch (err) {
-            console.error("Error creating user:", err);
+            console.error('Error creating user:', err);
         }
     };
 
@@ -99,7 +91,7 @@ const UsersList: React.FC = () => {
             email: user.email,
             role: user.role,
         });
-        setEditErrors({ username: "", email: "" });
+        setEditErrors({ username: '', email: '' });
         onOpen();
     };
 
@@ -114,13 +106,11 @@ const UsersList: React.FC = () => {
             });
 
             setUsers((prev) =>
-                prev.map((user) =>
-                    user.id === updatedUser.id ? updatedUser : user
-                )
+                prev.map((user) => (user.id === updatedUser.id ? updatedUser : user)),
             );
             onClose();
         } catch (err) {
-            console.error("Error updating user:", err);
+            console.error('Error updating user:', err);
         }
     };
 
@@ -129,24 +119,24 @@ const UsersList: React.FC = () => {
             await deleteUser(id);
             setUsers((prev) => prev.filter((user) => user.id !== id));
         } catch (err) {
-            console.error("Error deleting user:", err);
+            console.error('Error deleting user:', err);
         }
     };
 
     const validateEditForm = () => {
-        const errors = { username: "", email: "" };
+        const errors = { username: '', email: '' };
         let isValid = true;
 
         if (!editValues.username.trim()) {
-            errors.username = "Ім’я користувача є обов’язковим";
+            errors.username = 'Ім’я користувача є обов’язковим';
             isValid = false;
         }
 
         if (!editValues.email.trim()) {
-            errors.email = "Email є обов’язковим";
+            errors.email = 'Email є обов’язковим';
             isValid = false;
         } else if (!/^[\w-.]+@[\w-]+\.[a-z]{2,}$/i.test(editValues.email)) {
-            errors.email = "Невалідний формат email";
+            errors.email = 'Невалідний формат email';
             isValid = false;
         }
 
@@ -155,23 +145,22 @@ const UsersList: React.FC = () => {
     };
 
     if (loading) return <Spinner />;
-    if (error)
-        return <div className={styles["error-message"]}>Помилка: {error}</div>;
+    if (error) return <div className={styles['error-message']}>Помилка: {error}</div>;
 
     return (
-        <div className={styles["users-list"]}>
-            <h1 className={styles["title"]}>Керування користувачами</h1>
+        <div className={styles['users-list']}>
+            <h1 className={styles['title']}>Керування користувачами</h1>
 
             <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className={styles["modal-title"]}>
+                            <ModalHeader className={styles['modal-title']}>
                                 Редагувати користувача
                             </ModalHeader>
                             <ModalBody>
                                 {editingUser && (
-                                    <div className={styles["modal-form"]}>
+                                    <div className={styles['modal-form']}>
                                         <Input
                                             label="Ім'я користувача"
                                             value={editValues.username}
@@ -181,8 +170,12 @@ const UsersList: React.FC = () => {
                                                     username: e.target.value,
                                                 }))
                                             }
-                                            errorMessage={editErrors.username}
-                                            isInvalid={!!editErrors.username}
+                                            validate={() => {
+                                                if (editErrors.username) {
+                                                    return "Ім'я користувача є обов’язковим";
+                                                }
+                                                return null;
+                                            }}
                                         />
 
                                         <Input
@@ -194,8 +187,12 @@ const UsersList: React.FC = () => {
                                                     email: e.target.value,
                                                 }))
                                             }
-                                            errorMessage={editErrors.email}
-                                            isInvalid={!!editErrors.email}
+                                            validate={() => {
+                                                if (editErrors.email) {
+                                                    return 'Email є обов’язковим';
+                                                }
+                                                return null;
+                                            }}
                                         />
 
                                         <Select
@@ -204,9 +201,7 @@ const UsersList: React.FC = () => {
                                             onSelectionChange={(keys) =>
                                                 setEditValues((prev) => ({
                                                     ...prev,
-                                                    role: Array.from(
-                                                        keys
-                                                    )[0] as string,
+                                                    role: Array.from(keys)[0] as string,
                                                 }))
                                             }
                                         >
@@ -219,36 +214,23 @@ const UsersList: React.FC = () => {
                                     </div>
                                 )}
                             </ModalBody>
-                            <ModalFooter className={styles["modal-actions"]}>
-                                <Button
-                                    color="danger"
-                                    variant="light"
-                                    onPress={onClose}
-                                >
+                            <ModalFooter className={styles['modal-actions']}>
+                                <Button className={styles['cancel-button']} onClick={onClose}>
                                     Скасувати
                                 </Button>
-                                <Button
-                                    color="primary"
-                                    onPress={() => handleUpdateUser(onClose)}
-                                >
-                                    Зберегти
-                                </Button>
+                                <Button onClick={() => handleUpdateUser(onClose)}>Зберегти</Button>
                             </ModalFooter>
                         </>
                     )}
                 </ModalContent>
             </Modal>
 
-            <Card
-                title="Додати нового користувача"
-                className={styles["add-user-card"]}
-            >
-                <div className={styles["form-grid"]}>
+            <Card title="Додати нового користувача" className={styles['add-user-card']}>
+                <div className={styles['form-grid']}>
                     <Input
                         label="Ім'я користувача"
                         value={form.username}
                         onChange={(e) => form.setUsername(e.target.value)}
-                        errorMessage={form.errors.username}
                         isRequired
                     />
 
@@ -257,9 +239,7 @@ const UsersList: React.FC = () => {
                         type="email"
                         value={form.email}
                         onChange={(e) => form.setEmail(e.target.value)}
-                        errorMessage={form.errors.email}
                         isRequired
-                        isInvalid={!!form.errors.email}
                     />
 
                     <Input
@@ -267,66 +247,47 @@ const UsersList: React.FC = () => {
                         type="password"
                         value={form.password}
                         onChange={(e) => form.setPassword(e.target.value)}
-                        errorMessage={form.errors.password}
                         isRequired
                     />
 
                     <Select
                         label="Роль"
                         selectedKeys={[form.role]}
-                        onSelectionChange={(keys) =>
-                            form.setRole(Array.from(keys)[0] as string)
-                        }
+                        onSelectionChange={(keys) => form.setRole(Array.from(keys)[0] as string)}
                     >
                         {roles.map((role) => (
-                            <SelectItem key={role.value}>
-                                {role.label}
-                            </SelectItem>
+                            <SelectItem key={role.value}>{role.label}</SelectItem>
                         ))}
                     </Select>
                 </div>
 
-                <Button
-                    color="primary"
-                    onPress={handleCreateUser}
-                    className={styles["add-button"]}
-                >
+                <Button onClick={handleCreateUser} className={styles['add-button']}>
                     Додати користувача
                 </Button>
             </Card>
 
             <Card>
-                <Table
-                    aria-label="Таблиця користувачів"
-                    className={styles["users-table"]}
-                >
+                <Table aria-label="Таблиця користувачів" className={styles['users-table']}>
                     <TableHeader columns={columns}>
-                        {(column) => (
-                            <TableColumn key={column.key}>
-                                {column.label}
-                            </TableColumn>
-                        )}
+                        {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
                     </TableHeader>
                     <TableBody items={users}>
                         {(user) => (
                             <TableRow key={user.id}>
                                 {(columnKey) => {
                                     switch (columnKey) {
-                                        case "role":
+                                        case 'role':
                                             return (
                                                 <TableCell>
                                                     <Chip
                                                         color={
-                                                            user.role ===
-                                                            "admin"
-                                                                ? "danger"
-                                                                : "success"
+                                                            user.role === 'admin'
+                                                                ? 'danger'
+                                                                : 'success'
                                                         }
                                                         className={
-                                                            styles[
-                                                                "role-chip"
-                                                            ] +
-                                                            " " +
+                                                            styles['role-chip'] +
+                                                            ' ' +
                                                             styles[user.role]
                                                         }
                                                     >
@@ -334,45 +295,24 @@ const UsersList: React.FC = () => {
                                                     </Chip>
                                                 </TableCell>
                                             );
-                                        case "createdAt":
+                                        case 'createdAt':
                                             return (
                                                 <TableCell>
-                                                    {new Date(
-                                                        user.createdAt
-                                                    ).toLocaleDateString()}
+                                                    {new Date(user.createdAt).toLocaleDateString()}
                                                 </TableCell>
                                             );
-                                        case "actions":
+                                        case 'actions':
                                             return (
-                                                <TableCell
-                                                    className={
-                                                        styles["actions-cell"]
-                                                    }
-                                                >
-                                                    <div
-                                                        className={
-                                                            styles[
-                                                                "action-buttons"
-                                                            ]
-                                                        }
-                                                    >
-                                                        <Button
-                                                            size="sm"
-                                                            onPress={() =>
-                                                                handleEdit(user)
-                                                            }
-                                                        >
+                                                <TableCell className={styles['actions-cell']}>
+                                                    <div className={styles['action-buttons']}>
+                                                        <Button onClick={() => handleEdit(user)}>
                                                             Редагувати
                                                         </Button>
-                                                        {currentUser?.id ===
-                                                        user.id ? null : (
+                                                        {currentUser?.id === user.id ? null : (
                                                             <Button
-                                                                size="sm"
-                                                                color="danger"
-                                                                onPress={() =>
-                                                                    handleDelete(
-                                                                        user.id
-                                                                    )
+                                                                className={styles['delete-button']}
+                                                                onClick={() =>
+                                                                    handleDelete(user.id)
                                                                 }
                                                             >
                                                                 Видалити
@@ -384,11 +324,7 @@ const UsersList: React.FC = () => {
                                         default:
                                             return (
                                                 <TableCell>
-                                                    {
-                                                        user[
-                                                            columnKey as keyof User
-                                                        ]
-                                                    }
+                                                    {user[columnKey as keyof User]}
                                                 </TableCell>
                                             );
                                     }

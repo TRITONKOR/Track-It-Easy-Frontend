@@ -1,43 +1,40 @@
-import { useState } from "react";
-import ParcelsList from "../../components/AdminPanel/ParcelsList/ParcelsList";
-import UsersList from "../../components/AdminPanel/UsersList/UsersList";
-import styles from "./adminPage.module.scss";
+import { useState } from 'react';
+import ParcelsList from '../../components/AdminPanel/ParcelsList/ParcelsList';
+import UsersList from '../../components/AdminPanel/UsersList/UsersList';
+import { Button } from '../../components/ui/Button/Button';
+import styles from './adminPage.module.scss';
 
-type Tab = "users" | "parcels";
+type Tab = 'users' | 'parcels';
 
 export const AdminPage: React.FC = () => {
-    const [activeTab, setActiveTab] = useState<Tab>("users");
+    const [activeTab, setActiveTab] = useState<Tab>('users');
 
     return (
-        <div className={styles["admin-page"]}>
-            <div className={styles["admin-page__tabs"]}>
-                <button
+        <div className={styles['admin-page']}>
+            <div className={styles['admin-page__tabs']}>
+                <Button
                     className={
-                        styles["admin-page__tab"] +
-                        (activeTab === "users"
-                            ? " " + styles["admin-page__tab--active"]
-                            : "")
+                        styles['admin-page__tab'] +
+                        (activeTab === 'users' ? ' ' + styles['admin-page__tab--active'] : '')
                     }
-                    onClick={() => setActiveTab("users")}
+                    onClick={() => setActiveTab('users')}
                 >
                     Користувачі
-                </button>
-                <button
+                </Button>
+                <Button
                     className={
-                        styles["admin-page__tab"] +
-                        (activeTab === "parcels"
-                            ? " " + styles["admin-page__tab--active"]
-                            : "")
+                        styles['admin-page__tab'] +
+                        (activeTab === 'parcels' ? ' ' + styles['admin-page__tab--active'] : '')
                     }
-                    onClick={() => setActiveTab("parcels")}
+                    onClick={() => setActiveTab('parcels')}
                 >
                     Посилки
-                </button>
+                </Button>
             </div>
 
-            <div className={styles["admin-page__content"]}>
-                {activeTab === "users" && <UsersList />}
-                {activeTab === "parcels" && <ParcelsList />}
+            <div className={styles['admin-page__content']}>
+                {activeTab === 'users' && <UsersList />}
+                {activeTab === 'parcels' && <ParcelsList />}
             </div>
         </div>
     );

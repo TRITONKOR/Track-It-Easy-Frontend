@@ -1,7 +1,7 @@
-import { Parcel } from "../../../api/TrackApi";
-import { TrackDetails } from "../TrackDetails/TrackDetails";
-import { TrackItem } from "../TrackItem/TrackItem";
-import styles from "./trackList.module.scss";
+import { Parcel } from '../../../api/TrackApi';
+import { TrackDetails } from '../TrackDetails/TrackDetails';
+import { TrackItem } from '../TrackItem/TrackItem';
+import styles from './trackList.module.scss';
 
 interface TrackListProps {
     parcel: Parcel;
@@ -13,23 +13,17 @@ export const TrackList: React.FC<TrackListProps> = ({ parcel }) => {
 
         const firstDate = new Date(parcel.movementHistory[0].timestamp);
         const lastDate =
-            parcel.status === "delivered"
-                ? new Date(
-                      parcel.movementHistory[
-                          parcel.movementHistory.length - 1
-                      ].timestamp
-                  )
+            parcel.status === 'delivered'
+                ? new Date(parcel.movementHistory[parcel.movementHistory.length - 1].timestamp)
                 : new Date();
 
-        return Math.ceil(
-            (lastDate.getTime() - firstDate.getTime()) / (1000 * 60 * 60 * 24)
-        );
+        return Math.ceil((lastDate.getTime() - firstDate.getTime()) / (1000 * 60 * 60 * 24));
     };
 
     return (
-        <div className={styles["track-list"]}>
-            <div className={styles["track-list__content"]}>
-                <div className={styles["track-events"]}>
+        <div className={styles['track-list']}>
+            <div className={styles['track-list__content']}>
+                <div className={styles['track-events']}>
                     {parcel.movementHistory?.map((event, index) => (
                         <TrackItem
                             key={`${event.timestamp}-${index}`}
@@ -37,13 +31,13 @@ export const TrackList: React.FC<TrackListProps> = ({ parcel }) => {
                             description={event.description}
                             timestamp={event.timestamp}
                             courier={parcel.courier}
-                            className={styles["track-item-appear"]}
+                            className={styles['track-item-appear']}
                             style={{ animationDelay: `${index * 100}ms` }}
                         />
                     ))}
                 </div>
 
-                <div className={styles["track-details-wrapper"]}>
+                <div className={styles['track-details-wrapper']}>
                     <TrackDetails
                         package={{
                             trackingNumber: parcel.trackingNumber,
@@ -52,10 +46,7 @@ export const TrackList: React.FC<TrackListProps> = ({ parcel }) => {
                             toLocation: parcel.toLocation,
                             isFollowed: parcel.isFollowed,
                             weight: parcel.factualWeight || 0,
-                            status: parcel.status as
-                                | "in-transit"
-                                | "delivered"
-                                | "pending",
+                            status: parcel.status as 'in-transit' | 'delivered' | 'pending',
                         }}
                     />
                 </div>
