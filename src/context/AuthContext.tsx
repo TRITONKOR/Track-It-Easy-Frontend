@@ -1,14 +1,8 @@
-import { AxiosError } from "axios";
-import React, {
-    createContext,
-    ReactNode,
-    useContext,
-    useEffect,
-    useState,
-} from "react";
-import { useNavigate } from "react-router-dom";
-import { config } from "../config";
-import API from "../config/axios.config";
+import { AxiosError } from 'axios';
+import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
+import { config } from '../config';
+import API from '../config/axios.config';
 
 interface User {
     id: string;
@@ -32,9 +26,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({
-    children,
-}) => {
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
     const [token, setToken] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
@@ -43,7 +35,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
     useEffect(() => {
         const initializeAuth = async () => {
-            const storedToken = sessionStorage.getItem("accessToken");
+            const storedToken = sessionStorage.getItem('accessToken');
 
             if (storedToken) {
                 try {
@@ -52,24 +44,21 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
                         {},
                         {
                             withCredentials: true,
-                        }
+                        },
                     );
 
                     const { accessToken, user } = response.data;
 
-                    sessionStorage.setItem("accessToken", accessToken);
+                    sessionStorage.setItem('accessToken', accessToken);
 
                     setToken(accessToken);
                     setUser(user);
                 } catch (error) {
                     const axiosError = error as AxiosError;
-                    console.error(
-                        "Не вдалося оновити токени",
-                        axiosError.message
-                    );
+                    console.error('Не вдалося оновити токени', axiosError.message);
 
                     if (axiosError.response?.status === 401) {
-                        sessionStorage.removeItem("accessToken");
+                        sessionStorage.removeItem('accessToken');
                     }
                 }
             }
@@ -91,18 +80,18 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
             const { accessToken, user } = response.data;
 
-            sessionStorage.setItem("accessToken", accessToken);
+            sessionStorage.setItem('accessToken', accessToken);
             setToken(accessToken);
             setUser(user);
-            navigate("/");
+            navigate('/');
         } catch (error) {
             const axiosError = error as AxiosError;
-            console.error("Login failed", error);
+            console.error('Login failed', error);
 
             if (axiosError.response?.status === 401) {
-                setError("Неправильний email або пароль");
+                setError('Неправильний email або пароль');
             } else {
-                setError("Сталася помилка при вході. Спробуйте ще раз.");
+                setError('Сталася помилка при вході. Спробуйте ще раз.');
             }
             throw error;
         }
@@ -115,19 +104,19 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
                 {},
                 {
                     withCredentials: true,
-                }
+                },
             );
         } catch (error) {
-            console.error("Logout error", error);
+            console.error('Logout error', error);
         } finally {
-            sessionStorage.removeItem("accessToken");
-            localStorage.removeItem("accessToken");
+            sessionStorage.removeItem('accessToken');
+            localStorage.removeItem('accessToken');
             setToken(null);
             setUser(null);
             setLoading(false);
             setError(null);
 
-            navigate("/login", { replace: true });
+            navigate('/login', { replace: true });
         }
     };
 
@@ -142,15 +131,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         clearError,
     };
 
-    return (
-        <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
-    );
+    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {
     const context = useContext(AuthContext);
     if (context === undefined) {
-        throw new Error("useAuth must be used within an AuthProvider");
+        throw new Error('useAuth must be used within an AuthProvider');
     }
     return context;
 };

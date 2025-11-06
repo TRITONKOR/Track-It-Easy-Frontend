@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../../context/AuthContext";
-import styles from "./headerProfile.module.scss";
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router';
+import { useAuth } from '../../../context/AuthContext';
+import styles from './headerProfile.module.scss';
 
 interface HeaderProfileProps {
     user: {
@@ -20,17 +20,14 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({ user }) => {
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
-            if (
-                dropdownRef.current &&
-                !dropdownRef.current.contains(event.target as Node)
-            ) {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
                 setIsDropdownOpen(false);
             }
         };
 
-        document.addEventListener("mousedown", handleClickOutside);
+        document.addEventListener('mousedown', handleClickOutside);
         return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
+            document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
 
@@ -40,9 +37,9 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({ user }) => {
 
     const handleAPI = async () => {
         try {
-            navigate("/api");
+            navigate('/api');
         } catch (error) {
-            console.error("Error navigating to api page:", error);
+            console.error('Error navigating to api page:', error);
         }
     };
 
@@ -50,41 +47,36 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({ user }) => {
         try {
             logout();
         } catch (error) {
-            console.error("Error logging out:", error);
+            console.error('Error logging out:', error);
         }
     };
 
     const handleFollowedParcels = () => {
-        navigate("/followed-parcels");
+        navigate('/followed-parcels');
         setIsDropdownOpen(false);
     };
 
     return (
-        <div className={styles["header-profile-container"]} ref={dropdownRef}>
-            <div className={styles["profile-trigger"]} onClick={toggleDropdown}>
-                <div className={styles["header-profile-icon"]}>
+        <div className={styles['header-profile-container']} ref={dropdownRef}>
+            <div className={styles['profile-trigger']} onClick={toggleDropdown}>
+                <div className={styles['header-profile-icon']}>
                     <img src="./user.png" alt="User Icon" />
                 </div>
-                <span className={styles["header-profile-name"]}>
+                <span className={styles['header-profile-name']}>
                     <span>{user.username}</span>
                 </span>
             </div>
 
             <div
-                className={`${styles["profile-dropdown"]} ${
-                    isDropdownOpen ? styles["open"] : ""
-                }`}
+                className={`${styles['profile-dropdown']} ${isDropdownOpen ? styles['open'] : ''}`}
             >
-                <div
-                    className={styles["dropdown-item"]}
-                    onClick={handleFollowedParcels}
-                >
+                <div className={styles['dropdown-item']} onClick={handleFollowedParcels}>
                     Відстежувані посилки
                 </div>
-                <div className={styles["dropdown-item"]} onClick={handleAPI}>
+                <div className={styles['dropdown-item']} onClick={handleAPI}>
                     Для розробників
                 </div>
-                <div className={styles["dropdown-item"]} onClick={handleLogout}>
+                <div className={styles['dropdown-item']} onClick={handleLogout}>
                     Вийти з акаунту
                 </div>
             </div>

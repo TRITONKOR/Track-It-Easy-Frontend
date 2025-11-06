@@ -1,6 +1,6 @@
-import React from "react";
-import { Navigate, Outlet } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import React from 'react';
+import { Navigate, Outlet } from 'react-router';
+import { useAuth } from '../context/AuthContext';
 
 interface ProtectedRouteProps {
     adminOnly?: boolean;
@@ -9,7 +9,7 @@ interface ProtectedRouteProps {
 
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     adminOnly = false,
-    redirectPath = "/",
+    redirectPath = '/',
 }) => {
     const { user, isAuthenticated } = useAuth();
 
@@ -17,7 +17,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
         return <Navigate to={redirectPath} replace />;
     }
 
-    if (adminOnly && user?.role !== "admin") {
+    if (adminOnly && user?.role !== 'admin') {
         return <Navigate to="/" replace />;
     }
 
