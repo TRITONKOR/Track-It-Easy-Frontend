@@ -1,4 +1,4 @@
-import { Parcel } from '../../../api/TrackApi';
+import { Parcel } from '../../../api/track.api';
 import { TrackDetails } from '../TrackDetails/TrackDetails';
 import { TrackItem } from '../TrackItem/TrackItem';
 import styles from './trackList.module.scss';

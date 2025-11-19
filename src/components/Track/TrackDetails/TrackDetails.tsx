@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { TrackApi } from "../../../api/TrackApi";
-import { useAuth } from "../../../context/AuthContext";
-import styles from "./trackDetails.module.scss";
+import { useState } from 'react';
+import { TrackApi } from '../../../api/track.api';
+import { useAuth } from '../../../context/AuthContext';
+import styles from './trackDetails.module.scss';
 
 interface PackageDetails {
     trackingNumber: string;
@@ -13,9 +13,7 @@ interface PackageDetails {
     status: string;
 }
 
-export const TrackDetails: React.FC<{ package: PackageDetails }> = ({
-    package: pkg,
-}) => {
+export const TrackDetails: React.FC<{ package: PackageDetails }> = ({ package: pkg }) => {
     const [isFollowed, setIsFollowed] = useState(pkg.isFollowed);
     const [isLoading, setIsLoading] = useState(false);
     const { user, isAuthenticated } = useAuth();
@@ -32,41 +30,31 @@ export const TrackDetails: React.FC<{ package: PackageDetails }> = ({
             }
             setIsFollowed(!isFollowed);
         } catch (error) {
-            console.error("Error following parcel:", error);
+            console.error('Error following parcel:', error);
         } finally {
             setIsLoading(false);
         }
     };
 
     return (
-        <div
-            className={`${styles["track-details"]} ${styles["track-details-appear"]}`}
-        >
-            <div className={styles["track-details__header"]}>
-                <h1 className={styles["track-details__number"]}>
-                    {pkg.trackingNumber}
-                </h1>
-                <span className={`track-details__status ${pkg.status}`}>
-                    {pkg.status}
-                </span>
+        <div className={`${styles['track-details']} ${styles['track-details-appear']}`}>
+            <div className={styles['track-details__header']}>
+                <h1 className={styles['track-details__number']}>{pkg.trackingNumber}</h1>
+                <span className={`track-details__status ${pkg.status}`}>{pkg.status}</span>
                 {isAuthenticated && (
                     <button
                         className={`follow-parcel__button ${
-                            isFollowed ? "saved" : ""
-                        } ${isLoading ? "loading" : ""}`}
+                            isFollowed ? 'saved' : ''
+                        } ${isLoading ? 'loading' : ''}`}
                         onClick={handleFollowClick}
                         disabled={isLoading}
-                        aria-label={
-                            isFollowed
-                                ? "Прибрати із збережених"
-                                : "Зберегти посилку"
-                        }
+                        aria-label={isFollowed ? 'Прибрати із збережених' : 'Зберегти посилку'}
                     >
                         <svg
                             width="24"
                             height="24"
                             viewBox="0 0 24 24"
-                            fill={isFollowed ? "#ff4757" : "none"}
+                            fill={isFollowed ? '#ff4757' : 'none'}
                             stroke="#ff4757"
                             strokeWidth="2"
                         >
@@ -76,36 +64,32 @@ export const TrackDetails: React.FC<{ package: PackageDetails }> = ({
                 )}
             </div>
 
-            <div className={styles["track-details__info"]}>
+            <div className={styles['track-details__info']}>
                 {[
                     {
-                        label: "Днів у дорозі:",
+                        label: 'Днів у дорозі:',
                         value: pkg.daysInTransit,
                     },
                     {
-                        label: "Відправник:",
+                        label: 'Відправник:',
                         value: pkg.fromLocation,
                     },
                     {
-                        label: "Отримувач:",
+                        label: 'Отримувач:',
                         value: pkg.toLocation,
                     },
                     {
-                        label: "Вага:",
+                        label: 'Вага:',
                         value: pkg.weight,
                     },
                 ].map((item, index) => (
                     <div
                         key={index}
-                        className={`${styles["info-card"]} ${styles["info-card-appear"]}`}
+                        className={`${styles['info-card']} ${styles['info-card-appear']}`}
                         style={{ animationDelay: `${index * 150}ms` }}
                     >
-                        <span className={styles["info-card__label"]}>
-                            {item.label}
-                        </span>
-                        <span className={styles["info-card__value"]}>
-                            {item.value}
-                        </span>
+                        <span className={styles['info-card__label']}>{item.label}</span>
+                        <span className={styles['info-card__value']}>{item.value}</span>
                     </div>
                 ))}
             </div>

@@ -18,7 +18,7 @@ import {
     useDisclosure,
 } from '@heroui/react';
 import React, { useEffect, useState } from 'react';
-import { createUser, deleteUser, fetchUsers, updateUser, User } from '../../../api/UserApi';
+import { createUser, deleteUser, fetchUsers, updateUser, User } from '../../../api/user.api';
 import { Button } from '../../../components/ui/Button/Button';
 import { Input } from '../../../components/ui/Input/Input';
 import { useAuth } from '../../../context/AuthContext';

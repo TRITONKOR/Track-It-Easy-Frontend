@@ -16,7 +16,7 @@ import {
     useDisclosure,
 } from '@heroui/react';
 import React, { useEffect, useState } from 'react';
-import { Parcel, TrackApi } from '../../../api/TrackApi';
+import { Parcel, TrackApi } from '../../../api/track.api';
 import { Button } from '../../../components/ui/Button/Button';
 import styles from './parcelsList.module.scss';
 

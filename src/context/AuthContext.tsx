@@ -1,8 +1,7 @@
 import { AxiosError } from 'axios';
 import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { config } from '../config';
-import API from '../config/axios.config';
+import { authService } from '../api/auth.api';
 
 interface User {
     id: string;
@@ -39,15 +38,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
             if (storedToken) {
                 try {
-                    const response = await API.patch(
-                        `${config.SERVER_URL}/auth/refresh`,
-                        {},
-                        {
-                            withCredentials: true,
-                        },
-                    );
-
-                    const { accessToken, user } = response.data;
+                    const { accessToken, user } = await authService.refresh();
 
                     sessionStorage.setItem('accessToken', accessToken);
 
@@ -73,12 +64,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const login = async (email: string, password: string) => {
         try {
             setError(null);
-            const response = await API.post(`${config.SERVER_URL}/auth/login`, {
-                email,
-                password,
-            });
 
-            const { accessToken, user } = response.data;
+            const { accessToken, user } = await authService.login(email, password);
 
             sessionStorage.setItem('accessToken', accessToken);
             setToken(accessToken);
@@ -99,13 +86,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     const logout = async () => {
         try {
-            await API.post(
-                `${config.SERVER_URL}/auth/logout`,
-                {},
-                {
-                    withCredentials: true,
-                },
-            );
+            await authService.logout();
         } catch (error) {
             console.error('Logout error', error);
         } finally {
