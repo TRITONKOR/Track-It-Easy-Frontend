@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { generateApiKey } from '../../api/apikey.api';
+import { generateApiKey } from '../../api/apiKey.api';
 import { config } from '../../config';
 import { useAuth } from '../../context/AuthContext';
 import styles from './apiPage.module.scss';

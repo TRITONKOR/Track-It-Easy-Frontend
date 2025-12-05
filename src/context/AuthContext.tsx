@@ -34,13 +34,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     useEffect(() => {
         const initializeAuth = async () => {
-            const storedToken = sessionStorage.getItem('accessToken');
+            const storedToken = localStorage.getItem('accessToken');
 
             if (storedToken) {
                 try {
                     const { accessToken, user } = await authService.refresh();
 
-                    sessionStorage.setItem('accessToken', accessToken);
+                    localStorage.setItem('accessToken', accessToken);
 
                     setToken(accessToken);
                     setUser(user);
@@ -49,7 +49,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                     console.error('Не вдалося оновити токени', axiosError.message);
 
                     if (axiosError.response?.status === 401) {
-                        sessionStorage.removeItem('accessToken');
+                        localStorage.removeItem('accessToken');
                     }
                 }
             }
@@ -67,7 +67,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
             const { accessToken, user } = await authService.login(email, password);
 
-            sessionStorage.setItem('accessToken', accessToken);
+            localStorage.setItem('accessToken', accessToken);
             setToken(accessToken);
             setUser(user);
             navigate('/');

@@ -1,6 +1,5 @@
-import axios from "axios";
-import { config } from "../config";
-import { credentialHeaders } from "./credentials";
+import axios from 'axios';
+import { config } from '../config';
 
 const API = axios.create({
     baseURL: config.SERVER_URL,
@@ -12,28 +11,27 @@ const refreshToken = async () => {
         const response = await axios.patch(
             `${config.SERVER_URL}/auth/refresh`,
             {},
-            { withCredentials: true }
+            { withCredentials: true },
         );
 
-        sessionStorage.setItem("accessToken", response.data.accessToken);
+        localStorage.setItem('accessToken', response.data.accessToken);
 
         return response.data.accessToken;
     } catch (error) {
-        console.error("❌ Не вдалося оновити токен", error);
+        console.error('❌ Не вдалося оновити токен', error);
         return null;
     }
 };
 
 API.interceptors.request.use(
     async (config) => {
-        const token = sessionStorage.getItem("accessToken");
+        const token = localStorage.getItem('accessToken');
         if (token) {
-            config.headers["x-Authorization"] = `Bearer ${token}`;
-            config.headers.Authorization = credentialHeaders.Authorization;
+            config.headers['x-Authorization'] = `Bearer ${token}`;
         }
         return config;
     },
-    (error) => Promise.reject(error)
+    (error) => Promise.reject(error),
 );
 
 API.interceptors.response.use(
@@ -45,17 +43,13 @@ API.interceptors.response.use(
             originalRequest._retry = true;
             const newToken = await refreshToken();
             if (newToken) {
-                originalRequest.headers[
-                    "x-Authorization"
-                ] = `Bearer ${newToken}`;
-                originalRequest.headers.Authorization =
-                    credentialHeaders.Authorization;
+                originalRequest.headers['x-Authorization'] = `Bearer ${newToken}`;
                 return API(originalRequest);
             }
         }
 
         return Promise.reject(error);
-    }
+    },
 );
 
 export default API;
