@@ -23,7 +23,7 @@ interface AuthContextType {
     clearError: () => void;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
@@ -39,6 +39,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             if (storedToken) {
                 try {
                     const { accessToken, user } = await authService.refresh();
+
+                    if (!accessToken) {
+                        setLoading(false);
+                        return;
+                    }
 
                     localStorage.setItem('accessToken', accessToken);
 
