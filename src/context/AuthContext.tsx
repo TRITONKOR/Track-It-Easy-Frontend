@@ -40,6 +40,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                 try {
                     const { accessToken, user } = await authService.refresh();
 
+                    if (!accessToken) {
+                        setLoading(false);
+                        return;
+                    }
+
                     localStorage.setItem('accessToken', accessToken);
 
                     setToken(accessToken);
