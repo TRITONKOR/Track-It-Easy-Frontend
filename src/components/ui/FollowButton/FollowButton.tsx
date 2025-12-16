@@ -1,12 +1,18 @@
-export const FollowButton = (isUserF: boolean) => {
-    const [isLoading, setIsLoading] = useState(false);
+import { FC } from 'react';
 
+type FollowButtonProps = {
+    isFollowed: boolean;
+    isLoading: boolean;
+    onClick: () => void;
+};
+
+export const FollowButton: FC<FollowButtonProps> = ({ isFollowed, isLoading, onClick }) => {
     return (
         <button
             className={`follow-parcel__button ${
                 isFollowed ? 'saved' : ''
             } ${isLoading ? 'loading' : ''}`}
-            onClick={handleFollowClick}
+            onClick={onClick}
             disabled={isLoading}
             aria-label={isFollowed ? 'Прибрати із збережених' : 'Зберегти посилку'}
         >
