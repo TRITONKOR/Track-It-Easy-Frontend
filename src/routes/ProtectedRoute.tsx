@@ -11,7 +11,11 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     adminOnly = false,
     redirectPath = '/',
 }) => {
-    const { user, isAuthenticated } = useAuth();
+    const { user, isAuthenticated, loading } = useAuth();
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
 
     if (!isAuthenticated) {
         return <Navigate to={redirectPath} replace />;
