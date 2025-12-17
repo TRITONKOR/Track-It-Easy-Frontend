@@ -1,4 +1,5 @@
 {
     "files": [],
+    "exclude": ["**/*.cy.ts", "**/*.cy.tsx", "cypress"],
     "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }]
 }
